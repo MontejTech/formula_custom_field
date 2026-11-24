@@ -16,6 +16,6 @@ end
   require_relative "lib/formula_custom_field/#{f}"
 end
 
-Rails.configuration.to_prepare do
-  FormulaCustomField.apply_patches
-end
+# Redmine runs every plugin's init.rb inside its own to_prepare block (on boot and on each
+# code reload), so patch directly here. A nested `to_prepare` would never be executed.
+FormulaCustomField.apply_patches
