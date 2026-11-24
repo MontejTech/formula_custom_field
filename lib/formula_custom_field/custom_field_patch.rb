@@ -9,7 +9,7 @@ module FormulaCustomField
 
     included do
       safe_attributes 'is_formula', 'formula_expression'
-      validate :validate_formula_expression, if: :formula_field?
+      validate :validate_formula_expression, if: -> { has_attribute?(:is_formula) && is_formula? }
     end
 
     def formula_field?
@@ -41,6 +41,11 @@ module FormulaCustomField
     end
 
     def validate_formula_expression
+      if formula_expression.blank?
+        errors.add(:formula_expression, :blank)
+        return
+      end
+
       unless SUPPORTED_FORMATS.include?(field_format) && !multiple?
         errors.add(:formula_expression, formula_t(:error_formula_unsupported_format, formats: SUPPORTED_FORMATS.join(', ')))
         return

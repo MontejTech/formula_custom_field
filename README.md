@@ -16,7 +16,7 @@ Requires Redmine 5.0 or later.
 
 ```sh
 cd /path/to/redmine/plugins
-git clone <this repository> formula_custom_field     # the directory must be named formula_custom_field
+git clone https://github.com/MontejTech/formula_custom_field.git formula_custom_field     # the directory must be named formula_custom_field
 cd ..
 bundle exec rake redmine:plugins:migrate RAILS_ENV=production
 # restart Redmine

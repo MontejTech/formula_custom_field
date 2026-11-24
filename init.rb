@@ -7,6 +7,7 @@ Redmine::Plugin.register :formula_custom_field do
   author 'Dipak Mali - Montej Tech LLP'
   description 'Custom fields whose value is calculated on the server from a safe formula (no JavaScript, no eval)'
   version '0.1.0'
+  url 'https://github.com/MontejTech/formula_custom_field'
   requires_redmine version_or_higher: '5.0.0'
 end
 
