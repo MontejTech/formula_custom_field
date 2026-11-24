@@ -1,0 +1,14 @@
+en:
+  field_is_formula: Calculated from a formula
+  field_formula_expression: Formula
+  label_formula_available_fields: Fields you can use (double-click to insert)
+  label_formula_help: >-
+    Write a spreadsheet-style formula. Reference a custom field by its id as {#12} (double-click a field below to insert it)
+    and a built-in attribute as {@estimated_hours}. Operators: + - * / % ^ & = <> < <= > >=.
+    Functions: IF, AND, OR, NOT, ISBLANK, COALESCE, ABS, ROUND, ROUNDUP, ROUNDDOWN, CEIL, FLOOR, SQRT,
+    SUM, MIN, MAX, AVG, TODAY, DATE, DAYS, YEAR, MONTH, DAY, CONCAT, UPPER, LOWER, TRIM, LEN.
+    Example: ROUND({#12} * {#13} / 100, 2)
+  error_formula_unsupported_format: 'Formula fields support only these formats (single value): %{formats}'
+  error_formula_unknown_field: 'Unknown custom field {#%{id}} (it must be a custom field of the same object type)'
+  error_formula_unknown_attribute: 'Attribute {@%{name}} is not available'
+  error_formula_circular: refers to itself, directly or through other formula fields

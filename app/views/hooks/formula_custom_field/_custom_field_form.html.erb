@@ -1,0 +1,21 @@
+<% others = CustomField.where(type: custom_field.type).where.not(id: custom_field.id).order(:position, :name) %>
+<p>
+  <%= form.check_box :is_formula, data: { enables: '#custom_field_formula_expression, #formula_available_cfs' } %>
+</p>
+<p>
+  <%= form.text_area :formula_expression, rows: 6, style: 'width:90%; font-family:monospace' %>
+  <em class="info"><%= l(:label_formula_help) %></em>
+</p>
+<p>
+  <label><%= l(:label_formula_available_fields) %></label>
+  <%= select_tag '', options_for_select(others.map { |f| ["##{f.id} – #{f.name} (#{l(f.format.label)})", f.id] }),
+                 size: 6, multiple: true, id: 'formula_available_cfs' %>
+</p>
+<%= javascript_tag do %>
+  $('#formula_available_cfs').on('dblclick', function () {
+    var target = $('#custom_field_formula_expression');
+    $(this).find('option:selected').each(function () {
+      target.val(target.val() + '{#' + $(this).val() + '}');
+    });
+  });
+<% end %>
