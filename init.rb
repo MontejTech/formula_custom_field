@@ -11,10 +11,10 @@ Redmine::Plugin.register :formula_custom_field do
   requires_redmine version_or_higher: '5.0.0'
 end
 
-# hook listener needs Redmine::Hook, so it lives with the patches and is loaded here
-require_relative 'lib/formula_custom_field/calculator'
-require_relative 'lib/formula_custom_field/custom_field_patch'
-require_relative 'lib/formula_custom_field/customized_patch'
+# Redmine-dependent parts (one constant per file; also autoloadable by Zeitwerk)
+%w[calculator custom_field_patch customized_patch issue_patch hooks].each do |f|
+  require_relative "lib/formula_custom_field/#{f}"
+end
 
 Rails.configuration.to_prepare do
   FormulaCustomField.apply_patches

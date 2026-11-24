@@ -1,9 +1,18 @@
 # frozen_string_literal: true
 
-require_relative 'formula_custom_field/engine'
+# Pure-Ruby formula engine (no Rails needed – testable standalone with `ruby -Ilib test/engine_test.rb`).
+# One constant per file, so Redmine's Zeitwerk autoloader is happy.
+%w[formula_error parse_error evaluation_error values functions lexer parser evaluator attributes].each do |f|
+  require_relative "formula_custom_field/#{f}"
+end
 
 module FormulaCustomField
   CUSTOMIZED_MODELS = %w[Issue Project TimeEntry User Group Version Enumeration Document].freeze
+
+  # convenience for tests / console: FormulaCustomField.evaluate('1 + 2')
+  def self.evaluate(source, &resolver)
+    Evaluator.new(&resolver).evaluate(Parser.parse(source))
+  end
 
   def self.table_ready?
     CustomField.column_names.include?('is_formula')
@@ -19,10 +28,6 @@ module FormulaCustomField
 
   # called from init.rb inside to_prepare (safe to run on every code reload)
   def self.apply_patches
-    require_relative 'formula_custom_field/calculator'
-    require_relative 'formula_custom_field/custom_field_patch'
-    require_relative 'formula_custom_field/customized_patch'
-
     CustomField.include(CustomFieldPatch) unless CustomField.include?(CustomFieldPatch)
 
     CUSTOMIZED_MODELS.each do |name|

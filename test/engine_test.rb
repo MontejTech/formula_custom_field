@@ -3,7 +3,7 @@
 # Standalone test of the formula engine (no Redmine needed):
 #   ruby -Ilib test/engine_test.rb
 require 'minitest/autorun'
-require 'formula_custom_field/engine'
+require 'formula_custom_field'
 
 class EngineTest < Minitest::Test
   F = FormulaCustomField
