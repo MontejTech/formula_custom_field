@@ -113,8 +113,19 @@ class EngineTest < Minitest::Test
     ['UPPER("abc")', 'ABC'],
     ['LOWER("ABC")', 'abc'],
     ['TRIM("  hi  ")', 'hi'],
-    ['LEN("hello")', 5]
+    ['LEN("hello")', 5],
+    ['PART("5 X 7", "x", 2)', '7'],
+    ['VALUE("12.5")', 12.5]
   ].freeze
+
+  def test_text_dimension_multiplication
+    f = { 55 => '5 X 7' }
+    assert_equal BigDecimal('35'), calc('VALUE(PART({#55}, "x", 1)) * VALUE(PART({#55}, "x", 2))', f)
+    assert_equal BigDecimal('35'), calc('PART({#55}, "x", 1) * PART({#55}, "x", 2)', f) # text is coerced
+    assert_equal BigDecimal('35'), calc('PART({#55}, "x", 1) * PART({#55}, "x", 2)', 55 => '5x7')
+    assert_nil calc('PART({#55}, "x", 3)', f)
+    assert_nil calc('PART({#55}, "x", 1) * 2', 55 => nil)
+  end
 
   def test_every_function_example
     FUNCTION_EXAMPLES.each do |src, expected|

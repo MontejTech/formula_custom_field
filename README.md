@@ -117,6 +117,8 @@ In these examples `{#1}` is an empty field, so you can see how blanks behave.
 | `LOWER(text)` | lower case | `LOWER("ABC")` | `abc` |
 | `TRIM(text)` | remove spaces at both ends | `TRIM("  hi  ")` | `hi` |
 | `LEN(text)` | number of characters | `LEN("hello")` | `5` |
+| `PART(text, separator, n)` | the n-th piece of a text split at a separator (case-insensitive, trimmed, 1 = first; blank if missing) | `PART("5 X 7", "x", 2)` | `7` |
+| `VALUE(text)` | text to number (blank stays blank; error if not numeric) | `VALUE("12.5")` | `12.5` |
 
 ## More realistic examples
 
@@ -131,6 +133,7 @@ Assume these Issue fields: `#1` Unit price, `#2` Quantity, `#3` Discount %, `#4`
 | Delivery date | `{#5} + {#6}` |
 | Days until due | `DAYS({@due_date}, TODAY())` |
 | Full name | `TRIM({#7} & " " & {#8})` |
+| Multiply a text like `5 X 7` | `VALUE(PART({#9}, "x", 1)) * VALUE(PART({#9}, "x", 2))` |
 | Overdue flag | `IF(AND(NOT(ISBLANK({@due_date})), {@due_date} < TODAY()), "Overdue", "OK")` |
 | Budget status | `IF({#11} > {#10}, "Over budget", "Within budget")` |
 | Hours per day of effort | `ROUND({@estimated_hours} / MAX(1, DAYS({@due_date}, {@start_date})), 2)` |

@@ -101,5 +101,14 @@ module FormulaCustomField
     define('LOWER', 1) { |s| Values.text(s).downcase }
     define('TRIM', 1) { |s| Values.text(s).strip }
     define('LEN', 1) { |s| BigDecimal(Values.text(s).length) }
+    # PART("5 X 7", "x", 2) => "7"   (case-insensitive separator, parts are trimmed, 1-based, blank if missing)
+    define('PART', 3) do |text, separator, position|
+      sep = Values.text(separator)
+      pos = Values.num(position)
+      next nil if sep.empty? || pos.nil? || pos < 1
+
+      Values.text(text).split(Regexp.new(Regexp.escape(sep), Regexp::IGNORECASE), -1).map(&:strip)[pos.to_i - 1]
+    end
+    define('VALUE', 1) { |s| Values.num(s) } # text -> number ("12.5" => 12.5), blank stays blank
   end
 end
